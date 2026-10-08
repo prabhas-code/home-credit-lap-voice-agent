@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home Credit LAP Voice Agent — Live Voice Tester</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --accent: #ef4444;
+      --accent-hover: #dc2626;
+      --primary: #3b82f6;
+      --border: #334155;
+      --success: #10b981;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 1.25rem; font-weight: 700; color: #f87171; display: flex; align-items: center; gap: 0.5rem; }
+    .status-badge {
+      background: #334155;
+      color: #94a3b8;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .status-badge.live { background: #064e3b; color: #34d399; }
+    .container {
+      display: grid;
+      grid-template-columns: 320px 1fr 340px;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      flex: 1;
+    }
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+    h2 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: #cbd5e1; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.25rem; }
+    select, input {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: 0.2s;
+    }
+    .btn:hover { filter: brightness(1.1); }
+    .btn-call { background: #10b981; }
+    .btn-hangup { background: #ef4444; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-right: 0.5rem;
+      max-height: calc(100vh - 250px);
+    }
+    .bubble {
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .bubble.agent {
+      background: #1e3a8a;
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+    .bubble.user {
+      background: #374151;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+    .slot-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .slot-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0.6rem;
+      background: #0f172a;
+      border-radius: 6px;
+      border: 1px solid #1e293b;
+    }
+    .slot-item.filled {
+      border-color: #059669;
+      background: #064e3b33;
+    }
+    .slot-key { color: #94a3b8; }
+    .slot-val { font-weight: 600; color: #38bdf8; }
+    .controls {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .mic-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+    .pulse-dot.active {
+      background: #ef4444;
+      animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span>🏦 Home Credit</span>
+      <span style="color: #94a3b8; font-weight: 400; font-size: 0.9rem;">| LAP Voice Qualification Agent</span>
+    </div>
+    <div id="statusBadge" class="status-badge">STANDBY</div>
+  </header>
+
+  <div class="container">
+    <!-- Left Configuration Panel -->
+    <div class="panel">
+      <h2>⚙️ Session Settings</h2>
+      <div class="form-group">
+        <label>Customer Name</label>
+        <input type="text" id="custName" value="Mr. Rajesh Sharma">
+      </div>
+      <div class="form-group">
+        <label>Language</label>
+        <select id="langSelect">
+          <option value="English">English (Indian English)</option>
+          <option value="Hindi">Hindi (Conversational)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Agent Persona</label>
+        <select id="genderSelect">
+          <option value="female">Priya (Female Voice)</option>
+          <option value="male">Aarav (Male Voice)</option>
+        </select>
+      </div>
+      <div style="margin-top: auto;">
+        <button id="btnStart" class="btn btn-call" style="width: 100%;" onclick="startCall()">📞 Start Voice Call</button>
+        <button id="btnEnd" class="btn btn-hangup" style="width: 100%; margin-top: 0.5rem; display: none;" onclick="endCall()">🔴 End Call</button>
+        <button id="btnDownload" class="btn" style="width: 100%; margin-top: 0.5rem; display: none; background: #475569;" onclick="downloadSession()">💾 Download Call Log & Audio</button>
+      </div>
+    </div>
+
+    <!-- Center Chat & Mic Display -->
+    <div class="panel">
+      <h2>🎙️ Live Call Transcript & Audio Stream</h2>
+      <div id="chatBox" class="chat-box">
+        <div style="color: #64748b; text-align: center; margin-top: 4rem;">
+          Click <strong>"Start Voice Call"</strong> and allow microphone access to talk to the AI.
+        </div>
+      </div>
+      <div class="mic-indicator">
+        <div id="pulseDot" class="pulse-dot"></div>
+        <span id="micStatusText">Microphone Inactive</span>
+      </div>
+      <div class="controls">
+        <input type="text" id="manualInput" placeholder="Or type your message and press Enter..." onkeypress="if(event.key === 'Enter') sendManualText()">
+        <button class="btn" onclick="sendManualText()">Send</button>
+      </div>
+    </div>
+
+    <!-- Right State & Slots Inspector -->
+    <div class="panel">
+      <h2>📊 Live State Machine & Slots</h2>
+      <div style="margin-bottom: 0.75rem; font-size: 0.85rem; color: #94a3b8;">
+        State: <strong id="stateDisplay" style="color: #38bdf8;">INIT</strong>
+      </div>
+      <div id="slotContainer" class="slot-list">
+        <div class="slot-item" id="slot-property_type"><span class="slot-key">property_type</span><span class="slot-val">—</span></div>
+        <div class="slot-item" id="slot-ownership_status"><span class="slot-key">ownership_status</span><span class="slot-val">—</span></div>
+        <div class="slot-item" id="slot-original_documents_available"><span class="slot-key">original_documents</span><span class="slot-val">—</span></div>
+        <div class="slot-item" id="slot-loan_amount"><span class="slot-key">loan_amount</span><span class="slot-val">—</span></div>
+        <div class="slot-item" id="slot-occupation"><span class="slot-key">occupation</span><span class="slot-val">—</span></div>
+        <div class="slot-item" id="slot-income_mode"><span class="slot-key">income_mode</span><span class="slot-val">—</span></div>
+        <div class="slot-item" id="slot-property_market_value"><span class="slot-key">market_value</span><span class="slot-val">—</span></div>
+        <div class="slot-item" id="slot-tenure"><span class="slot-key">tenure</span><span class="slot-val">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let recognition = null;
+    let synth = window.speechSynthesis;
+    let isCallActive = false;
+    let sessionId = "session_" + Date.now();
+    let transcriptData = [];
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordedAudioBlob = null;
+
+    // Check SpeechRecognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    function initRecognition() {
+      if (!SpeechRecognition) return null;
+      const sr = new SpeechRecognition();
+      sr.continuous = true;
+      sr.interimResults = false;
+      const lang = document.getElementById("langSelect").value;
+      sr.lang = lang === "Hindi" ? "hi-IN" : "en-IN";
+
+      sr.onresult = (event) => {
+        const last = event.results.length - 1;
+        const text = event.results[last][0].transcript.trim();
+        if (text && isCallActive) {
+          addMessage("user", text);
+          sendToAgent(text);
+        }
+      };
+
+      sr.onerror = (e) => {
+        console.warn("Speech recognition error:", e.error);
+      };
+
+      sr.onend = () => {
+        if (isCallActive) {
+          try { sr.start(); } catch(err) {}
+        }
+      };
+      return sr;
+    }
+
+    async function startCall() {
+      sessionId = "session_" + Date.now();
+      transcriptData = [];
+      audioChunks = [];
+      document.getElementById("chatBox").innerHTML = "";
+
+      // Setup audio recording
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+        mediaRecorder.onstop = () => {
+          recordedAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        };
+        mediaRecorder.start();
+      } catch (err) {
+        console.warn("Microphone access not granted for recording:", err);
+      }
+
+      isCallActive = true;
+      document.getElementById("statusBadge").innerText = "CALL IN PROGRESS";
+      document.getElementById("statusBadge").className = "status-badge live";
+      document.getElementById("btnStart").style.display = "none";
+      document.getElementById("btnEnd").style.display = "block";
+      document.getElementById("pulseDot").className = "pulse-dot active";
+      document.getElementById("micStatusText").innerText = "Listening...";
+
+      const lang = document.getElementById("langSelect").value;
+      const cust = document.getElementById("custName").value;
+      const gender = document.getElementById("genderSelect").value;
+
+      recognition = initRecognition();
+      if (recognition) {
+        try { recognition.start(); } catch(e) {}
+      }
+
+      const res = await fetch("/api/start_call", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          session_id: sessionId,
+          language: lang,
+          customer_name: cust,
+          agent_gender: gender
+        })
+      });
+      const data = await res.json();
+      addMessage("agent", data.agent_response);
+      speakAgent(data.agent_response);
+      updateStateView(data);
+    }
+
+    async function sendToAgent(text) {
+      const res = await fetch("/api/process_turn", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          session_id: sessionId,
+          user_utterance: text
+        })
+      });
+      const data = await res.json();
+      addMessage("agent", data.agent_response);
+      speakAgent(data.agent_response);
+      updateStateView(data);
+
+      if (data.is_terminal) {
+        setTimeout(() => { endCall(); }, 3500);
+      }
+    }
+
+    function sendManualText() {
+      const input = document.getElementById("manualInput");
+      const text = input.value.trim();
+      if (text && isCallActive) {
+        input.value = "";
+        addMessage("user", text);
+        sendToAgent(text);
+      }
+    }
+
+    function speakAgent(text) {
+      if (!synth) return;
+      synth.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      const lang = document.getElementById("langSelect").value;
+      utter.lang = lang === "Hindi" ? "hi-IN" : "en-IN";
+      synth.speak(utter);
+    }
+
+    function endCall() {
+      isCallActive = false;
+      if (recognition) { try { recognition.stop(); } catch(e) {} }
+      if (synth) { synth.cancel(); }
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') { mediaRecorder.stop(); }
+
+      document.getElementById("statusBadge").innerText = "CALL COMPLETED";
+      document.getElementById("statusBadge").className = "status-badge";
+      document.getElementById("btnEnd").style.display = "none";
+      document.getElementById("btnStart").style.display = "block";
+      document.getElementById("btnDownload").style.display = "block";
+      document.getElementById("pulseDot").className = "pulse-dot";
+      document.getElementById("micStatusText").innerText = "Call Terminated";
+    }
+
+    function addMessage(role, text) {
+      transcriptData.push({ role, text, timestamp: new Date().toISOString() });
+      const box = document.getElementById("chatBox");
+      const bubble = document.createElement("div");
+      bubble.className = `bubble ${role}`;
+      bubble.innerText = text;
+      box.appendChild(bubble);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function updateStateView(data) {
+      document.getElementById("stateDisplay").innerText = data.call_state || "QUALIFICATION_FLOW";
+      if (data.slots) {
+        for (const [k, v] of Object.entries(data.slots)) {
+          const el = document.getElementById(`slot-${k}`);
+          if (el) {
+            const valSpan = el.querySelector(".slot-val");
+            if (v !== null && v !== undefined) {
+              valSpan.innerText = v;
+              el.className = "slot-item filled";
+            } else {
+              valSpan.innerText = "—";
+              el.className = "slot-item";
+            }
+          }
+        }
+      }
+    }
+
+    function downloadSession() {
+      // 1. Download Transcript
+      const transcriptBlob = new Blob([JSON.stringify(transcriptData, null, 2)], { type: "application/json" });
+      const tUrl = URL.createObjectURL(transcriptBlob);
+      const a1 = document.createElement("a");
+      a1.href = tUrl;
+      a1.download = `home_credit_call_transcript_${Date.now()}.json`;
+      a1.click();
+
+      // 2. Download Audio if available
+      if (recordedAudioBlob) {
+        const aUrl = URL.createObjectURL(recordedAudioBlob);
+        const a2 = document.createElement("a");
+        a2.href = aUrl;
+        a2.download = `home_credit_call_audio_${Date.now()}.webm`;
+        a2.click();
+      }
+    }
+  </script>
+</body>
+</html>

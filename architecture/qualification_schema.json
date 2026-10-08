@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HomeCreditLAPQualificationState",
+  "description": "State schema for Home Credit Loan Against Property AI Voice Agent",
+  "type": "object",
+  "required": [
+    "conversation_id",
+    "call_state",
+    "slots"
+  ],
+  "properties": {
+    "conversation_id": {
+      "type": "string",
+      "description": "Unique session identifier"
+    },
+    "call_state": {
+      "type": "string",
+      "enum": [
+        "INIT",
+        "IDENTITY_VERIFICATION",
+        "WRONG_PERSON_EXIT",
+        "CALLBACK_SCHEDULING",
+        "OFFER_PRESENTATION",
+        "QUALIFICATION_FLOW",
+        "DISQUALIFIED",
+        "TRANSFER_HANDOFF",
+        "POLITE_EXIT",
+        "QUALIFICATION_GATE_PASSED",
+        "SENIOR_EXPERT_HANDOFF",
+        "ENDED"
+      ]
+    },
+    "runtime_context": {
+      "type": "object",
+      "properties": {
+        "company_name": { "type": "string", "default": "Home Credit" },
+        "customer_name": { "type": "string" },
+        "agent_name": { "type": "string" },
+        "agent_gender": { "type": "string", "enum": ["female", "male"] },
+        "current_date": { "type": "string" },
+        "current_day": { "type": "string" },
+        "current_time": { "type": "string" },
+        "language_to_speak": { "type": "string", "enum": ["English", "Hindi"] }
+      }
+    },
+    "slots": {
+      "type": "object",
+      "properties": {
+        "property_type": {
+          "type": ["string", "null"],
+          "enum": ["Residential", "Commercial", "Industrial", "Agricultural", null],
+          "description": "Property category. Agricultural is strictly ineligible."
+        },
+        "ownership_status": {
+          "type": ["string", "null"],
+          "enum": ["Sole", "Joint", null],
+          "description": "Sole or Joint ownership. Both are eligible."
+        },
+        "original_documents_available": {
+          "type": ["boolean", "null"],
+          "description": "True if customer has original property documents ready for verification."
+        },
+        "loan_amount": {
+          "type": ["number", "null"],
+          "maximum": 7500000,
+          "description": "Loan amount in INR. Must be <= 75 Lakhs."
+        },
+        "occupation": {
+          "type": ["string", "null"],
+          "enum": ["Salaried", "Self-Employed", null],
+          "description": "Employment type. Both are eligible."
+        },
+        "income_mode": {
+          "type": ["string", "null"],
+          "enum": ["Bank", "Cash", null],
+          "description": "Income receipt mode. Must be Bank to be eligible."
+        },
+        "property_market_value": {
+          "type": ["number", "string", "null"],
+          "description": "Estimated property market value in INR."
+        },
+        "tenure": {
+          "type": ["integer", "null"],
+          "minimum": 3,
+          "maximum": 15,
+          "description": "Repayment period in years (3 to 15 inclusive)."
+        }
+      },
+      "required": [
+        "property_type",
+        "ownership_status",
+        "original_documents_available",
+        "loan_amount",
+        "occupation",
+        "income_mode",
+        "property_market_value",
+        "tenure"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "disqualification_reason": { "type": ["string", "null"] },
+        "transfer_reason": { "type": ["string", "null"] },
+        "callback_time": { "type": ["string", "null"] },
+        "qualification_complete": { "type": "boolean", "default": false }
+      }
+    }
+  }
+}

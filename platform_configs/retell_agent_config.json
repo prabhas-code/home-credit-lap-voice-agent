@@ -1,0 +1,61 @@
+{
+  "agent_name": "Home Credit LAP Qualification Voice Agent",
+  "version": "1.0.0",
+  "platform": "Retell AI",
+  "llm_websocket_url": "wss://your-backend.com/llm-websocket",
+  "voice_id": "11labs-Adrian",
+  "voice_temperature": 0.3,
+  "voice_speed": 1.05,
+  "responsiveness": 0.85,
+  "ambient_sound": "call_center",
+  "ambient_sound_volume": 0.1,
+  "enable_backchannel": true,
+  "backchannel_frequency": 0.4,
+  "backchannel_words": ["Understood", "Right", "Got it", "Okay"],
+  "interruption_sensitivity": 0.8,
+  "enable_transcription_formatting": true,
+  "reminder_trigger_ms": 10000,
+  "reminder_max_count": 2,
+  "end_call_after_silence_ms": 30000,
+  "max_call_duration_ms": 600000,
+  "general_prompt": "You are Priya, a professional, warm, and advisory AI Outbound Loan Specialist calling from Home Credit (company_name: {{company_name}}). Your agent_gender is female. Target customer: {{customer_name}}. Language: {{language_to_speak}}. Present a pre-approved Loan Against Property (LAP) offer up to 75 Lakhs, verify the 7 eligibility criteria (Property Type, Ownership, Original Documents, Loan Amount <= 75L, Occupation & Bank Income, Market Value, Tenure 3-15 yrs). Disqualify immediately if agricultural, cash income, or no original documents. Route to Loan Transfer Specialist if existing loan or EMI reduction mentioned. Hand off to Senior Loan Expert when all 7 criteria pass.",
+  "begin_message": "Hello, am I speaking with {{customer_name}}?",
+  "dynamic_variables": {
+    "company_name": "Home Credit",
+    "customer_name": "Mr. Rajesh Sharma",
+    "agent_name": "Priya",
+    "agent_gender": "female",
+    "current_date": "2026-10-08",
+    "current_day": "Thursday",
+    "current_time": "04:15 PM",
+    "additional_context_from_rag": "Home Credit LAP provides flexible tenure from 3 to 15 years, competitive interest rates determined by senior loan experts upon physical document check, and zero hidden charges.",
+    "language_to_speak": "English"
+  },
+  "tools": [
+    {
+      "type": "custom_function",
+      "name": "update_qualification_state",
+      "description": "Updates the 7 qualification slots and handles state transitions",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "property_type": { "type": "string", "enum": ["Residential", "Commercial", "Industrial", "Agricultural"] },
+          "ownership_status": { "type": "string", "enum": ["Sole", "Joint"] },
+          "original_documents_available": { "type": "boolean" },
+          "loan_amount": { "type": "number" },
+          "occupation": { "type": "string", "enum": ["Salaried", "Self-Employed"] },
+          "income_mode": { "type": "string", "enum": ["Bank", "Cash"] },
+          "property_market_value": { "type": "string" },
+          "tenure": { "type": "integer" },
+          "call_state": { "type": "string", "enum": ["QUALIFICATION_FLOW", "DISQUALIFIED", "TRANSFER_HANDOFF", "QUALIFIED", "CALLBACK_REQUESTED"] },
+          "callback_time": { "type": "string" }
+        }
+      }
+    },
+    {
+      "type": "end_call",
+      "name": "hangup_call",
+      "description": "Ends the phone call when a terminal state (Qualified Handoff, Disqualified, Transfer Handoff, Callback, or Wrong Person) is reached."
+    }
+  ]
+}

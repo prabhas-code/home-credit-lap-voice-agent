@@ -1,0 +1,603 @@
+[
+  {
+    "id": "TC-01",
+    "name": "Fully Eligible Golden Path (Residential + Salaried)",
+    "description": "Standard sequential flow where customer qualifies on all 7 criteria and is handed off to senior loan expert.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, Rajesh here. Who is calling?" },
+      { "user": "Sure, I have a few minutes. Go ahead." },
+      { "user": "It is a residential 3BHK apartment." },
+      { "user": "I am the sole owner." },
+      { "user": "Yes, I have all the original property deeds and registry papers ready." },
+      { "user": "I am looking for around 50 lakhs." },
+      { "user": "I work as a software manager, salaried, and my salary is credited directly to my ICICI bank account." },
+      { "user": "Current market value is approximately 1.2 crore." },
+      { "user": "I would prefer a tenure of 10 years." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "property_type": "Residential",
+      "ownership_status": "Sole",
+      "original_documents_available": true,
+      "loan_amount": 5000000,
+      "occupation": "Salaried",
+      "income_mode": "Bank",
+      "property_market_value": "1.2 Crore",
+      "tenure": 10
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-02",
+    "name": "Agricultural Property Immediate Disqualification",
+    "description": "Customer specifies property is agricultural land; agent must immediately disqualify and end call without asking further questions.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "Okay, tell me about it." },
+      { "user": "It is 4 acres of agricultural farmland in Punjab." }
+    ],
+    "expected_final_state": "DISQUALIFIED",
+    "expected_slots": {
+      "property_type": "Agricultural"
+    },
+    "disposition": "DISQUALIFIED"
+  },
+  {
+    "id": "TC-03",
+    "name": "Cash-Only Income Immediate Disqualification",
+    "description": "Customer receives income purely in cash; agent must immediately disqualify and end call.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, this is Rajesh." },
+      { "user": "Sure, check my eligibility." },
+      { "user": "Residential house." },
+      { "user": "Sole ownership." },
+      { "user": "Yes, original papers are with me." },
+      { "user": "I need 30 lakhs." },
+      { "user": "I run a small business and all my earnings are strictly in cash, no bank account." }
+    ],
+    "expected_final_state": "DISQUALIFIED",
+    "expected_slots": {
+      "property_type": "Residential",
+      "ownership_status": "Sole",
+      "original_documents_available": true,
+      "loan_amount": 3000000,
+      "occupation": "Self-Employed",
+      "income_mode": "Cash"
+    },
+    "disposition": "DISQUALIFIED"
+  },
+  {
+    "id": "TC-04",
+    "name": "No Original Property Documents Immediate Disqualification",
+    "description": "Customer does not have original property documents; agent must immediately disqualify and end call.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, Rajesh speaking." },
+      { "user": "Sure, go ahead." },
+      { "user": "Commercial shop." },
+      { "user": "Sole owner." },
+      { "user": "No, original documents are missing, I only have Xerox photocopies." }
+    ],
+    "expected_final_state": "DISQUALIFIED",
+    "expected_slots": {
+      "property_type": "Commercial",
+      "ownership_status": "Sole",
+      "original_documents_available": false
+    },
+    "disposition": "DISQUALIFIED"
+  },
+  {
+    "id": "TC-05A",
+    "name": "Loan Amount Above ₹75L - Customer Accepts ₹75L Cap",
+    "description": "Customer requests ₹80L; agent offers ₹75L max cap; customer agrees and qualification continues.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "Yes, please." },
+      { "user": "Residential villa." },
+      { "user": "Sole owner." },
+      { "user": "Yes, original papers are available." },
+      { "user": "I need 80 lakhs for my business." },
+      { "user": "Yes, 75 lakhs works for me, let's proceed." },
+      { "user": "Salaried with bank income." },
+      { "user": "Market value is 2 crore." },
+      { "user": "12 years tenure." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "property_type": "Residential",
+      "loan_amount": 7500000,
+      "tenure": 12
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-05B",
+    "name": "Loan Amount Above ₹75L - Customer Refuses Cap",
+    "description": "Customer requests ₹1.5 Cr; agent offers ₹75L cap; customer declines and agent exits politely.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "Sure." },
+      { "user": "Commercial building." },
+      { "user": "Sole owner." },
+      { "user": "Yes, have original registry." },
+      { "user": "I strictly need 1.5 crore." },
+      { "user": "No, 75 lakhs is too low for my project, I cannot proceed with that." }
+    ],
+    "expected_final_state": "POLITE_EXIT",
+    "expected_slots": {
+      "property_type": "Commercial",
+      "loan_amount": null
+    },
+    "disposition": "EXITED"
+  },
+  {
+    "id": "TC-06A",
+    "name": "Invalid Tenure - Customer Accepts 3-15 Years Range",
+    "description": "Customer asks for 20 years; agent explains 3-15 years limit; customer chooses 15 years and qualifies.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, Rajesh here." },
+      { "user": "Okay." },
+      { "user": "Residential." },
+      { "user": "Sole owner." },
+      { "user": "Yes, original papers ready." },
+      { "user": "40 lakhs." },
+      { "user": "Salaried in bank." },
+      { "user": "1 crore." },
+      { "user": "I want 20 years." },
+      { "user": "Alright, let's keep it 15 years then." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "tenure": 15
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-06B",
+    "name": "Invalid Tenure - Customer Refuses Range",
+    "description": "Customer insists on 25 years; declines 3-15 years; agent politely exits.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, Rajesh here." },
+      { "user": "Okay." },
+      { "user": "Residential." },
+      { "user": "Sole owner." },
+      { "user": "Yes, original papers ready." },
+      { "user": "40 lakhs." },
+      { "user": "Salaried in bank." },
+      { "user": "1 crore." },
+      { "user": "I need 25 years." },
+      { "user": "No, I cannot pay high EMI, I won't proceed with 15 years." }
+    ],
+    "expected_final_state": "POLITE_EXIT",
+    "expected_slots": {
+      "tenure": null
+    },
+    "disposition": "EXITED"
+  },
+  {
+    "id": "TC-07",
+    "name": "Joint Ownership Verification",
+    "description": "Customer has jointly owned property with spouse; verified as 100% eligible.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "Go ahead." },
+      { "user": "Residential flat." },
+      { "user": "It is jointly owned by me and my wife." },
+      { "user": "Yes, we have all original papers." },
+      { "user": "35 lakhs." },
+      { "user": "Salaried, bank transfer." },
+      { "user": "85 lakhs market value." },
+      { "user": "7 years tenure." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "ownership_status": "Joint",
+      "property_type": "Residential",
+      "loan_amount": 3500000,
+      "tenure": 7
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-08",
+    "name": "Self-Employed with Bank Income Verification",
+    "description": "Customer is self-employed businessman with bank revenues; verified as eligible.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "Sure, tell me." },
+      { "user": "Commercial shop in market." },
+      { "user": "Sole owner." },
+      { "user": "Yes, original deed available." },
+      { "user": "60 lakhs." },
+      { "user": "I am self-employed running a wholesale textile business, all turnover in current bank account." },
+      { "user": "Market value is 1.5 crore." },
+      { "user": "5 years." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "occupation": "Self-Employed",
+      "income_mode": "Bank"
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-09",
+    "name": "Existing Loan on Property - Loan Transfer Switch",
+    "description": "Customer mentions active loan on property; agent immediately switches to loan transfer specialist flow.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "Actually, I already have an existing loan running on this property with another bank." }
+    ],
+    "expected_final_state": "TRANSFER_HANDOFF",
+    "disposition": "TRANSFER_SPECIALIST"
+  },
+  {
+    "id": "TC-10",
+    "name": "EMI Reduction Request - Loan Transfer Switch",
+    "description": "Customer asks to reduce existing monthly EMI; agent switches to loan transfer flow.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, Rajesh here." },
+      { "user": "Can you help me reduce my current monthly EMI on my existing property loan?" }
+    ],
+    "expected_final_state": "TRANSFER_HANDOFF",
+    "disposition": "TRANSFER_SPECIALIST"
+  },
+  {
+    "id": "TC-11",
+    "name": "Customer Busy / Meeting / Driving Flow",
+    "description": "Customer is driving / busy; agent captures preferred callback time and exits without pitching.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "I am driving in heavy traffic right now, please call me later today at 6:30 PM." }
+    ],
+    "expected_final_state": "CALLBACK_SCHEDULING",
+    "metadata": {
+      "callback_time": "6:30 PM"
+    },
+    "disposition": "CALLBACK_REQUESTED"
+  },
+  {
+    "id": "TC-12",
+    "name": "Information Provided Out of Order",
+    "description": "Customer volunteers loan amount and bank income early; agent extracts both and skips asking them later.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "I am interested. By the way, I need 50 lakhs and my salary comes directly to my bank account." },
+      { "user": "It is a residential house." },
+      { "user": "Sole ownership." },
+      { "user": "Yes, original papers are ready." },
+      { "user": "Market value is 1.1 crore." },
+      { "user": "8 years tenure." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "loan_amount": 5000000,
+      "income_mode": "Bank",
+      "property_type": "Residential",
+      "ownership_status": "Sole",
+      "original_documents_available": true,
+      "property_market_value": "1.1 Crore",
+      "tenure": 8
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-13",
+    "name": "Compound Multi-Slot Extraction in One Sentence",
+    "description": "Customer delivers 4 data points in single utterance; agent extracts all 4 and asks only remaining 3 fields.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, Rajesh here." },
+      { "user": "Sure." },
+      { "user": "I have a residential house in Pune, jointly owned with my wife, worth around 1.2 crore, and I need 60 lakhs." },
+      { "user": "Yes, we have all original property deeds ready." },
+      { "user": "I am salaried in an IT firm with direct bank transfer." },
+      { "user": "Tenure of 10 years." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "property_type": "Residential",
+      "ownership_status": "Joint",
+      "property_market_value": "1.2 Crore",
+      "loan_amount": 6000000,
+      "original_documents_available": true,
+      "occupation": "Salaried",
+      "income_mode": "Bank",
+      "tenure": 10
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-14",
+    "name": "Identity Mismatch / Wrong Person",
+    "description": "Wrong person answers phone; agent does not reveal sensitive pre-approved loan offer and exits.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "No, you have the wrong number. Rajesh does not live here." }
+    ],
+    "expected_final_state": "WRONG_PERSON_EXIT",
+    "disposition": "WRONG_PERSON"
+  },
+  {
+    "id": "TC-15",
+    "name": "Customer Interrupts with Product FAQ Mid-Flow",
+    "description": "Customer asks about prepayment charges mid-flow; agent clarifies safely, retains state, and continues qualification.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "Okay." },
+      { "user": "Residential flat." },
+      { "user": "Wait, is there any prepayment penalty if I close the loan early?" },
+      { "user": "Sole owner." },
+      { "user": "Yes, original papers available." },
+      { "user": "45 lakhs." },
+      { "user": "Salaried in bank." },
+      { "user": "90 lakhs value." },
+      { "user": "5 years." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "property_type": "Residential",
+      "ownership_status": "Sole",
+      "original_documents_available": true,
+      "loan_amount": 4500000,
+      "occupation": "Salaried",
+      "income_mode": "Bank",
+      "property_market_value": "90 Lakhs",
+      "tenure": 5
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-16",
+    "name": "Customer Inquires About Exact Interest Rate",
+    "description": "Customer asks for exact interest rate; agent strictly adheres to compliance and defers to senior loan expert without hallucinating numbers.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, Rajesh speaking." },
+      { "user": "What is the exact interest rate on this loan?" },
+      { "user": "Okay, that makes sense. It is a commercial showroom." },
+      { "user": "Sole owner." },
+      { "user": "Yes, original papers ready." },
+      { "user": "50 lakhs." },
+      { "user": "Self employed with bank account." },
+      { "user": "1.5 crore." },
+      { "user": "7 years." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "property_type": "Commercial",
+      "ownership_status": "Sole",
+      "original_documents_available": true,
+      "loan_amount": 5000000,
+      "occupation": "Self-Employed",
+      "income_mode": "Bank",
+      "property_market_value": "1.5 Crore",
+      "tenure": 7
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-17",
+    "name": "Industrial Property Golden Path Qualification",
+    "description": "Customer owns an industrial factory; verified as 100% eligible category.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Mr. Rajesh Sharma",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "English"
+    },
+    "turns": [
+      { "user": "Yes, speaking." },
+      { "user": "Sure, check my eligibility." },
+      { "user": "It is an industrial factory warehouse in Faridabad." },
+      { "user": "Sole owner." },
+      { "user": "Yes, original deeds are available." },
+      { "user": "70 lakhs." },
+      { "user": "Self-employed, all turnover in current bank account." },
+      { "user": "2 crore market value." },
+      { "user": "10 years." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "property_type": "Industrial",
+      "loan_amount": 7000000
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-18",
+    "name": "Hindi Golden Path Qualification (Female Grammar)",
+    "description": "Full conversation in Hindi with female agent grammar validation.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Rajesh",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "Hindi"
+    },
+    "turns": [
+      { "user": "Haan Rajesh bol raha hoon." },
+      { "user": "Haan theek hai, bataiye." },
+      { "user": "Mera residential flat hai." },
+      { "user": "Mera akele ka hai." },
+      { "user": "Haan original registry mere paas hai." },
+      { "user": "50 lakh chahiye." },
+      { "user": "Salaried hoon aur account mein salary aati hai." },
+      { "user": "1 crore market value hai." },
+      { "user": "10 saal tenure chahiye." }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "property_type": "Residential",
+      "ownership_status": "Sole",
+      "original_documents_available": true,
+      "loan_amount": 5000000,
+      "income_mode": "Bank",
+      "property_market_value": "1 Crore",
+      "tenure": 10
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "TC-19",
+    "name": "Hindi Agricultural Disqualification (Kheti ki Zameen)",
+    "description": "Customer specifies kheti ki zameen in Hindi; agent immediately disqualifies.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Rajesh",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "Hindi"
+    },
+    "turns": [
+      { "user": "Haan Rajesh bol raha hoon." },
+      { "user": "Haan bataiye." },
+      { "user": "Yeh meri kheti ki zameen hai gaon mein." }
+    ],
+    "expected_final_state": "DISQUALIFIED",
+    "expected_slots": {
+      "property_type": "Agricultural"
+    },
+    "disposition": "DISQUALIFIED"
+  },
+  {
+    "id": "TC-20",
+    "name": "Hindi Loan Transfer Switch (Purana Loan / EMI Kam)",
+    "description": "Customer mentions purana loan in Hindi; agent immediately routes to Loan Transfer Specialist.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Rajesh",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "Hindi"
+    },
+    "turns": [
+      { "user": "Haan Rajesh bol raha hoon." },
+      { "user": "Mera pehle se loan chal raha hai, mujhe EMI kam karni hai." }
+    ],
+    "expected_final_state": "TRANSFER_HANDOFF",
+    "disposition": "TRANSFER_SPECIALIST"
+  }
+]

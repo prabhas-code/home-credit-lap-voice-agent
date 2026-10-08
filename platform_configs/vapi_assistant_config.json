@@ -1,0 +1,34 @@
+{
+  "name": "Home Credit LAP Assistant",
+  "transcriber": {
+    "provider": "deepgram",
+    "model": "nova-2",
+    "language": "en-IN"
+  },
+  "model": {
+    "provider": "openai",
+    "model": "gpt-4o",
+    "temperature": 0.2,
+    "systemPrompt": "You are Priya, a professional AI Outbound Loan Specialist calling from Home Credit (company_name: {{company_name}}). Follow the 7-step LAP qualification process. Disqualify immediately if agricultural, cash income, or no original documents. Switch to loan-transfer flow if existing loan or EMI reduction mentioned. Hand off to senior loan expert upon qualifying all 7 points.",
+    "tools": [
+      {
+        "type": "dtmf"
+      },
+      {
+        "type": "endCallFunction"
+      }
+    ]
+  },
+  "voice": {
+    "provider": "11labs",
+    "voiceId": "sarah"
+  },
+  "firstMessage": "Hello, am I speaking with {{customer_name}}?",
+  "recordingEnabled": true,
+  "endCallPhrases": [
+    "Have a wonderful day",
+    "Have a great day",
+    "Aapka din shubh ho",
+    "Thank you for your time"
+  ]
+}

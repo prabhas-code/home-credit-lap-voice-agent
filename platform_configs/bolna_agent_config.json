@@ -1,0 +1,56 @@
+{
+  "agent_name": "HomeCredit_LAP_Advisor_Bolna",
+  "agent_type": "outbound_sales_qualification",
+  "pipeline": {
+    "transcriber": {
+      "provider": "deepgram",
+      "model": "nova-2",
+      "language": "en-IN",
+      "endpointing": 250
+    },
+    "llm": {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "temperature": 0.2,
+      "max_tokens": 150,
+      "system_prompt_file": "prompts/system_prompt_english.txt"
+    },
+    "synthesizer": {
+      "provider": "elevenlabs",
+      "voice_id": "21m00Tcm4TlvDq8ikWAM",
+      "model": "eleven_turbo_v2_5",
+      "buffer_size": 50
+    },
+    "telephony": {
+      "provider": "twilio"
+    }
+  },
+  "context": {
+    "company_name": "Home Credit",
+    "customer_name": "Mr. Rajesh Sharma",
+    "agent_name": "Priya",
+    "agent_gender": "female",
+    "current_date": "2026-10-08",
+    "current_day": "Thursday",
+    "current_time": "04:15 PM",
+    "language_to_speak": "English",
+    "additional_context_from_rag": "Home Credit LAP offers up to 75 Lakhs, tenures 3-15 years, minimal documentation, senior loan expert consultation."
+  },
+  "hooks": {
+    "on_call_start": {
+      "say": "Hello, am I speaking with {{customer_name}}?"
+    },
+    "on_disqualification": {
+      "action": "hangup",
+      "post_webhook": "https://api.homecredit.co.in/lead-status/disqualified"
+    },
+    "on_transfer_needed": {
+      "action": "tag_and_hangup",
+      "post_webhook": "https://api.homecredit.co.in/lead-status/transfer-specialist"
+    },
+    "on_qualification_complete": {
+      "action": "tag_and_hangup",
+      "post_webhook": "https://api.homecredit.co.in/lead-status/qualified-senior-expert"
+    }
+  }
+}

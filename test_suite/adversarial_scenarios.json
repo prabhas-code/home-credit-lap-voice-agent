@@ -1,0 +1,474 @@
+[
+  {
+    "id": "ADV-01",
+    "name": "User-Specified Full Hindi Flow (Out-of-Order + Akela + Haan + Salaried + 10 Saal)",
+    "description": "Tests the exact multi-turn conversation specified by user in Hindi female mode.",
+    "context": {
+      "company_name": "Home Credit",
+      "customer_name": "Rajesh",
+      "agent_name": "Priya",
+      "agent_gender": "female",
+      "language_to_speak": "Hindi"
+    },
+    "turns": [
+      { "user": "yes" },
+      { "user": "I have a 3BHK flat in Noida worth 1.2 crore and need 50 lakhs" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "salaried hoon, salary bank account mein aati hai" },
+      { "user": "10 saal" }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": {
+      "property_type": "Residential",
+      "property_market_value": "1.2 Crore",
+      "loan_amount": 5000000,
+      "ownership_status": "Sole",
+      "original_documents_available": true,
+      "occupation": "Salaried",
+      "income_mode": "Bank",
+      "tenure": 10
+    },
+    "disposition": "QUALIFIED"
+  },
+  {
+    "id": "ADV-02",
+    "name": "Ownership Short Answer: akela",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "theek hai" },
+      { "user": "flat hai" },
+      { "user": "akela" }
+    ],
+    "expected_slots": { "property_type": "Residential", "ownership_status": "Sole" }
+  },
+  {
+    "id": "ADV-03",
+    "name": "Ownership Short Answer: akele",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "ji haan" },
+      { "user": "bataiye" },
+      { "user": "residential ghar hai" },
+      { "user": "akele" }
+    ],
+    "expected_slots": { "property_type": "Residential", "ownership_status": "Sole" }
+  },
+  {
+    "id": "ADV-04",
+    "name": "Ownership Short Answer: akeli",
+    "context": { "customer_name": "Sunita", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "makan hai" },
+      { "user": "akeli" }
+    ],
+    "expected_slots": { "property_type": "Residential", "ownership_status": "Sole" }
+  },
+  {
+    "id": "ADV-05",
+    "name": "Ownership Sentence: main akela malik hoon",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "ghar" },
+      { "user": "main akela malik hoon" }
+    ],
+    "expected_slots": { "ownership_status": "Sole" }
+  },
+  {
+    "id": "ADV-06",
+    "name": "Ownership Sentence: meri property hai / mere naam par hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "flat" },
+      { "user": "sirf mere naam par hai, meri property hai" }
+    ],
+    "expected_slots": { "ownership_status": "Sole" }
+  },
+  {
+    "id": "ADV-07",
+    "name": "Ownership Joint: wife ke saath",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "okay" },
+      { "user": "residential" },
+      { "user": "wife ke saath" }
+    ],
+    "expected_slots": { "ownership_status": "Joint" }
+  },
+  {
+    "id": "ADV-08",
+    "name": "Ownership Joint: husband ke saath",
+    "context": { "customer_name": "Pooja", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "ghar hai" },
+      { "user": "husband ke saath joint hai" }
+    ],
+    "expected_slots": { "ownership_status": "Joint" }
+  },
+  {
+    "id": "ADV-09",
+    "name": "Ownership Joint: family ke saath / partner ke saath",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "theek hai" },
+      { "user": "shop" },
+      { "user": "family ke saath partner ke saath joint hai" }
+    ],
+    "expected_slots": { "property_type": "Commercial", "ownership_status": "Joint" }
+  },
+  {
+    "id": "ADV-10",
+    "name": "Ownership Joint: hum dono ke naam pe hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "ghar" },
+      { "user": "hum dono ke naam pe hai" }
+    ],
+    "expected_slots": { "ownership_status": "Joint" }
+  },
+  {
+    "id": "ADV-11",
+    "name": "Documents Short Answer: haan",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "residential" },
+      { "user": "akela" },
+      { "user": "haan" }
+    ],
+    "expected_slots": { "original_documents_available": true }
+  },
+  {
+    "id": "ADV-12",
+    "name": "Documents Short Answer: hain",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "bataiye" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "hain" }
+    ],
+    "expected_slots": { "original_documents_available": true }
+  },
+  {
+    "id": "ADV-13",
+    "name": "Documents Short Answer: ji",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "residential" },
+      { "user": "sole owner" },
+      { "user": "ji" }
+    ],
+    "expected_slots": { "original_documents_available": true }
+  },
+  {
+    "id": "ADV-14",
+    "name": "Documents Sentence: mere paas hain / originals hain",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "makan" },
+      { "user": "akela" },
+      { "user": "original documents mere paas hain" }
+    ],
+    "expected_slots": { "original_documents_available": true }
+  },
+  {
+    "id": "ADV-15",
+    "name": "Documents Negative Short Answer: nahi",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "nahi" }
+    ],
+    "expected_final_state": "DISQUALIFIED",
+    "expected_slots": { "original_documents_available": false }
+  },
+  {
+    "id": "ADV-16",
+    "name": "Documents Negative Sentence: mere paas nahi hain / photocopy hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "residential" },
+      { "user": "akela" },
+      { "user": "original mere paas nahi hain, sirf photocopy hai" }
+    ],
+    "expected_final_state": "DISQUALIFIED",
+    "expected_slots": { "original_documents_available": false }
+  },
+  {
+    "id": "ADV-17",
+    "name": "Property Type: ghar hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "ghar hai" }
+    ],
+    "expected_slots": { "property_type": "Residential" }
+  },
+  {
+    "id": "ADV-18",
+    "name": "Property Type: flat hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "flat hai" }
+    ],
+    "expected_slots": { "property_type": "Residential" }
+  },
+  {
+    "id": "ADV-19",
+    "name": "Property Type: dukaan hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "dukaan hai" }
+    ],
+    "expected_slots": { "property_type": "Commercial" }
+  },
+  {
+    "id": "ADV-20",
+    "name": "Property Type: factory hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "factory hai" }
+    ],
+    "expected_slots": { "property_type": "Industrial" }
+  },
+  {
+    "id": "ADV-21",
+    "name": "Property Type Disqualification: kheti ki zameen hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "kheti ki zameen hai" }
+    ],
+    "expected_final_state": "DISQUALIFIED",
+    "expected_slots": { "property_type": "Agricultural" }
+  },
+  {
+    "id": "ADV-22",
+    "name": "Hindi Income: salary bank mein aati hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "40 lakh" },
+      { "user": "salary bank mein aati hai" }
+    ],
+    "expected_slots": { "occupation": "Salaried", "income_mode": "Bank" }
+  },
+  {
+    "id": "ADV-23",
+    "name": "Hindi Income: bank account mein salary aati hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "30 lakh" },
+      { "user": "bank account mein salary aati hai, job karta hoon" }
+    ],
+    "expected_slots": { "occupation": "Salaried", "income_mode": "Bank" }
+  },
+  {
+    "id": "ADV-24",
+    "name": "Hindi Income Disqualification: cash mein salary milti hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "ghar" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "25 lakh" },
+      { "user": "cash mein salary milti hai" }
+    ],
+    "expected_final_state": "DISQUALIFIED",
+    "expected_slots": { "income_mode": "Cash" }
+  },
+  {
+    "id": "ADV-25",
+    "name": "Hindi Business: business karta hoon aur payment bank mein aati hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "dukaan" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "50 lakh" },
+      { "user": "business karta hoon aur payment bank mein aati hai" }
+    ],
+    "expected_slots": { "occupation": "Self-Employed", "income_mode": "Bank" }
+  },
+  {
+    "id": "ADV-26",
+    "name": "Hindi Tenure: dus saal",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "50 lakh" },
+      { "user": "salaried, bank" },
+      { "user": "1 crore" },
+      { "user": "dus saal" }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": { "tenure": 10 }
+  },
+  {
+    "id": "ADV-27",
+    "name": "Hindi Tenure: paanch saal",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "50 lakh" },
+      { "user": "salaried, bank" },
+      { "user": "1 crore" },
+      { "user": "paanch saal" }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": { "tenure": 5 }
+  },
+  {
+    "id": "ADV-28",
+    "name": "Hindi Tenure: pandrah saal",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "50 lakh" },
+      { "user": "salaried, bank" },
+      { "user": "1 crore" },
+      { "user": "pandrah saal" }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": { "tenure": 15 }
+  },
+  {
+    "id": "ADV-29",
+    "name": "Hindi Tenure Ineligible: do saal (Customer Refuses Range)",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "50 lakh" },
+      { "user": "salaried, bank" },
+      { "user": "1 crore" },
+      { "user": "do saal" },
+      { "user": "nahi, main 2 saal se zyada nahi chahunga" }
+    ],
+    "expected_final_state": "POLITE_EXIT"
+  },
+  {
+    "id": "ADV-30",
+    "name": "Hindi Tenure Ineligible: bees saal (Customer Accepts 15 saal)",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "flat" },
+      { "user": "akela" },
+      { "user": "haan" },
+      { "user": "50 lakh" },
+      { "user": "salaried, bank" },
+      { "user": "1 crore" },
+      { "user": "bees saal" },
+      { "user": "chalo theek hai 15 saal kar dijiye" }
+    ],
+    "expected_final_state": "SENIOR_EXPERT_HANDOFF",
+    "expected_slots": { "tenure": 15 }
+  },
+  {
+    "id": "ADV-31",
+    "name": "Compound Sentence 1: Flat residential, wife ke saath joint, documents hain",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "sure" },
+      { "user": "Mera flat residential hai, wife ke saath joint hai aur original documents mere paas hain." }
+    ],
+    "expected_slots": {
+      "property_type": "Residential",
+      "ownership_status": "Joint",
+      "original_documents_available": true
+    }
+  },
+  {
+    "id": "ADV-32",
+    "name": "Compound Sentence 2: 50 lakh chahiye, value 1 crore, 10 saal tenure",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "Mujhe 50 lakh chahiye, property ki value around 1 crore hai aur main 10 saal ka tenure chahta hoon." }
+    ],
+    "expected_slots": {
+      "loan_amount": 5000000,
+      "property_market_value": "1 Crore",
+      "tenure": 10
+    }
+  },
+  {
+    "id": "ADV-33",
+    "name": "Compound Sentence 3: Salaried hoon aur salary directly bank account mein aati hai",
+    "context": { "customer_name": "Rajesh", "language_to_speak": "Hindi" },
+    "turns": [
+      { "user": "haan" },
+      { "user": "haan" },
+      { "user": "Main salaried hoon aur salary directly bank account mein aati hai." }
+    ],
+    "expected_slots": {
+      "occupation": "Salaried",
+      "income_mode": "Bank"
+    }
+  }
+]
